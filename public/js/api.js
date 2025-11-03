@@ -14,15 +14,12 @@ const API = {
 
             const data = await response.json();
             
-            // Log the full response for debugging
             console.log(`Response for ${domain}:`, data);
 
-            // Check if there's an error in the response
             if (data.error) {
                 throw new Error(data.error + (data.details ? ': ' + data.details : ''));
             }
 
-            // Check if we have valid appraisal data
             if (data && (typeof data.atom_appraisal !== 'undefined' || typeof data.domain_name !== 'undefined')) {
                 return { success: true, data };
             } else {
@@ -65,7 +62,6 @@ const API = {
                 const appraisalValue = result.data.atom_appraisal || 0;
                 totalValue += appraisalValue;
                 
-                // Handle arrays safely
                 const positiveSignals = Array.isArray(result.data.positive_signals) 
                     ? result.data.positive_signals.join('; ') 
                     : (result.data.positive_signals || '');
