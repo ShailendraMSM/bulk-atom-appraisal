@@ -47,3 +47,141 @@ You need two pieces of information from Atom.com:
 ### **Step 2: Prepare Your Domain List**
 
 Create a list of domains (one per line):
+
+
+example.com
+mydomain.net
+coolsite.io
+
+
+
+The tool will automatically:
+- Remove `http://` and `https://`
+- Remove `www.`
+- Remove trailing slashes and paths
+- Convert to lowercase
+- Validate TLD support
+
+### **Step 3: Run Appraisal**
+
+1. Visit [https://bulk-atom-appraisal.vercel.app](https://bulk-atom-appraisal.vercel.app)
+2. Enter your API credentials
+3. Paste your domain list
+4. Click "Validate Domains"
+5. Review validated domains
+6. Click "Appraise All Domains"
+7. Wait for processing (progress bar shows status)
+8. Download CSV report
+
+---
+
+## 📊 CSV Export Format
+
+The exported CSV includes:
+
+| Column | Description |
+|--------|-------------|
+| Domain | Domain name |
+| Appraisal Value | Estimated value in USD |
+| Domain Score | Score out of 10 |
+| Positive Signals | Factors increasing value |
+| Negative Signals | Factors decreasing value |
+| TLD Taken Count | Number of TLD variations registered |
+| TM Conflicts | Trademark conflicts count |
+| Date Registered | Original registration date |
+| User Level | Your Atom.com user level |
+| Status | Success or error message |
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript (ES6+)
+- **Backend:** Vercel Serverless Functions (Node.js)
+- **Hosting:** Vercel (with global CDN)
+- **API:** Atom.com Domain Appraisal API
+
+---
+
+## 🏗️ Project Structure
+
+atom-valuation-tool/
+├── public/ # Frontend files
+│ ├── index.html # Main HTML file
+│ ├── css/
+│ │ └── style.css # Styles with gradient design
+│ └── js/
+│ ├── config.js # Configuration (API endpoint, TLDs)
+│ ├── dom.js # DOM element references
+│ ├── utils.js # Utility functions
+│ ├── validator.js # Domain validation logic
+│ ├── api.js # API communication
+│ ├── csv.js # CSV generation and download
+│ └── app.js # Main application controller
+├── api/ # Vercel Serverless Functions
+│ └── appraise.js # API proxy endpoint
+├── vercel.json # Vercel configuration
+├── .gitignore # Git ignore rules
+├── LICENSE # MIT License
+└── README.md # This file
+
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Atom.com** for providing the domain appraisal API
+- **Vercel** for excellent serverless hosting platform
+- **DomainX Community** for inspiration and support
+- **Contributors** who help improve this tool
+
+---
+
+## 📧 Support
+
+- **Issues:** [GitHub Issues](https://github.com/ShailendraMSM/bulk-atom-appraisal/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/ShailendraMSM/bulk-atom-appraisal/discussions)
+
+---
+
+## 🔗 Links
+
+- **Live App:** [https://bulk-atom-appraisal.vercel.app](https://bulk-atom-appraisal.vercel.app)
+- **GitHub:** [https://github.com/ShailendraMSM/bulk-atom-appraisal](https://github.com/ShailendraMSM/bulk-atom-appraisal)
+- **Atom.com API:** [https://www.atom.com/dashboard/seller/api-access](https://www.atom.com/dashboard/seller/api-access)
+
+---
+
+## 📸 Screenshots
+
+### Main Interface
+Beautiful gradient design with intuitive input fields for API credentials and domain list.
+
+### Progress Tracking
+Real-time progress bar showing which domain is currently being processed.
+
+### CSV Export
+Comprehensive report with all appraisal data including positive/negative signals, TM conflicts, and more.
+
+---
+
+## 🎯 Supported TLDs
+
+- .com
+- .net
+- .org
+- .co
+- .ai
+- .io
+- .xyz
+- .co.uk
+- .app
+- .in
+
+*Need support for additional TLDs? Open an issue or submit a PR!*
