@@ -14,13 +14,38 @@
         <!-- API Credentials Section -->
         <div class="section" id="credentialsSection">
             <div class="section-title">🔑 API Credentials</div>
+            
             <div style="margin-bottom: 15px;">
                 <label for="apiKey">Enter API Key Below</label>
                 <input type="text" id="apiKey" placeholder="Your Atom API Token">
+                <p class="help-text">
+                    📌 Get your API token here: 
+                    <a href="https://www.atom.com/dashboard/seller/api-access" target="_blank" rel="noopener noreferrer">
+                        https://www.atom.com/dashboard/seller/api-access
+                    </a>
+                </p>
             </div>
+            
             <div>
                 <label for="userId">Enter Atom User ID Below</label>
                 <input type="text" id="userId" placeholder="Your Atom User ID">
+                <p class="help-text">
+                    📌 Get your User ID here: 
+                    <a href="https://www.atom.com/dashboard/account/details" target="_blank" rel="noopener noreferrer">
+                        https://www.atom.com/dashboard/account/details
+                    </a>
+                </p>
+            </div>
+
+            <!-- Privacy Notice -->
+            <div class="privacy-notice">
+                <p>
+                    🔒 <strong>Privacy Notice:</strong> This website does not cache or store your API credentials. 
+                    All processing happens in your browser and our serverless function only proxies requests. 
+                    <a href="https://github.com/ShailendraMSM/bulk-atom-appraisal" target="_blank" rel="noopener noreferrer">
+                        Review our source code on GitHub
+                    </a>
+                </p>
             </div>
         </div>
 
@@ -72,6 +97,16 @@
             </div>
             <button class="button" id="downloadBtn">📥 Download CSV Report</button>
             <button class="button" id="resetBtn" style="background: #6c757d; margin-top: 10px;">🔄 Start Over</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                Made with ❤️ | 
+                <a href="https://github.com/ShailendraMSM/bulk-atom-appraisal" target="_blank" rel="noopener noreferrer">
+                    View on GitHub
+                </a>
+            </p>
         </div>
     </div>
 
