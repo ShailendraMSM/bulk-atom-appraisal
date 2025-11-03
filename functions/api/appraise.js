@@ -6,74 +6,79 @@ export async function onRequestGet(context) {
     const domainName = searchParams.get('domain_name');
 
     if (!apiToken || !userId || !domainName) {
-        return new Response(JSON.stringify({
-            error: 'Missing required parameters'
-        }), {
+        return new Response(JSON.stringify({ error: 'Missing parameters' }), {
             status: 400,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
         });
     }
 
-    const atomUrl = `https://www.atom.com/api/marketplace/domain-appraisal?api_token=${encodeURIComponent(apiToken)}&user_id=${encodeURIComponent(userId)}&domain_name=${encodeURIComponent(domainName)}`;
+    const atomUrl = `https://www.atom.com/api/marketplace/domain-appraisal?api_token=${apiToken}&user_id=${userId}&domain_name=${domainName}`;
 
     try {
+        // Use cf object to configure Cloudflare-specific options
         const response = await fetch(atomUrl, {
-            method: 'GET',
+            cf: {
+                // Bypass Cloudflare's cache
+                cacheTtl: 0,
+                cacheEverything: false,
+                // Mimic browser behavior
+                scrapeShield: false,
+                apps: false,
+                minify: {
+                    javascript: false,
+                    css: false,
+                    html: false
+                }
+            },
             headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*',
                 'Accept-Language': 'en-US,en;q=0.9',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': 'https://www.atom.com/',
-                'Origin': 'https://www.atom.com',
-                'Sec-Fetch-Dest': 'empty',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Site': 'same-origin'
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Sec-Fetch-User': '?1',
+                'Cache-Control': 'max-age=0'
             }
         });
 
-        const responseText = await response.text();
+        const text = await response.text();
         
-        console.log('Status:', response.status);
-        console.log('Response:', responseText.substring(0, 500));
+        console.log('Response Status:', response.status);
+        console.log('Response Preview:', text.substring(0, 200));
 
-        if (!response.ok) {
+        // Check for Cloudflare challenge
+        if (text.includes('Attention Required') || text.includes('cloudflare')) {
             return new Response(JSON.stringify({
-                error: `Atom API error: ${response.status}`,
-                details: responseText.substring(0, 500)
+                error: 'Still getting Cloudflare challenge',
+                hint: 'Cloudflare Workers IP is being blocked by Atom.com',
+                suggestion: 'Consider using Chrome Extension instead'
             }), {
-                status: response.status,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                }
+                status: 403,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
             });
         }
 
-        const data = JSON.parse(responseText);
-
+        // Parse and return JSON
+        const data = JSON.parse(text);
         return new Response(JSON.stringify(data), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'no-cache'
-            }
-        });
-    } catch (error) {
-        console.error('Error:', error);
-        
-        return new Response(JSON.stringify({
-            error: error.message,
-            domain: domainName
-        }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             }
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        return new Response(JSON.stringify({
+            error: error.message
+        }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
         });
     }
 }
