@@ -12,15 +12,21 @@ const API = {
                 }
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
             const data = await response.json();
             
-            if (data && typeof data.atom_appraisal !== 'undefined') {
+            // Log the full response for debugging
+            console.log(`Response for ${domain}:`, data);
+
+            // Check if there's an error in the response
+            if (data.error) {
+                throw new Error(data.error + (data.details ? ': ' + data.details : ''));
+            }
+
+            // Check if we have valid appraisal data
+            if (data && (typeof data.atom_appraisal !== 'undefined' || typeof data.domain_name !== 'undefined')) {
                 return { success: true, data };
             } else {
+                console.error('Unexpected response structure:', data);
                 throw new Error('Invalid API response structure');
             }
         } catch (error) {
@@ -59,12 +65,21 @@ const API = {
                 const appraisalValue = result.data.atom_appraisal || 0;
                 totalValue += appraisalValue;
                 
+                // Handle arrays safely
+                const positiveSignals = Array.isArray(result.data.positive_signals) 
+                    ? result.data.positive_signals.join('; ') 
+                    : (result.data.positive_signals || '');
+                
+                const negativeSignals = Array.isArray(result.data.negative_signals) 
+                    ? result.data.negative_signals.join('; ') 
+                    : (result.data.negative_signals || '');
+                
                 this.results.push({
                     domain: result.data.domain_name || domain,
                     appraisal: appraisalValue,
                     score: result.data.domain_score || 0,
-                    positive_signals: (result.data.positive_signals || []).join('; '),
-                    negative_signals: (result.data.negative_signals || []).join('; '),
+                    positive_signals: positiveSignals,
+                    negative_signals: negativeSignals,
                     tld_taken: result.data.tld_taken_count || 0,
                     tm_conflicts: result.data.tm_conflicts || 0,
                     date_registered: result.data.date_registered || '',
