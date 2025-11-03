@@ -101,30 +101,6 @@ The exported CSV includes:
 - **Hosting:** Vercel (with global CDN)
 - **API:** Atom.com Domain Appraisal API
 
----
-
-## 🏗️ Project Structure
-
-atom-valuation-tool/
-├── public/ # Frontend files
-│ ├── index.html # Main HTML file
-│ ├── css/
-│ │ └── style.css # Styles with gradient design
-│ └── js/
-│ ├── config.js # Configuration (API endpoint, TLDs)
-│ ├── dom.js # DOM element references
-│ ├── utils.js # Utility functions
-│ ├── validator.js # Domain validation logic
-│ ├── api.js # API communication
-│ ├── csv.js # CSV generation and download
-│ └── app.js # Main application controller
-├── api/ # Vercel Serverless Functions
-│ └── appraise.js # API proxy endpoint
-├── vercel.json # Vercel configuration
-├── .gitignore # Git ignore rules
-├── LICENSE # MIT License
-└── README.md # This file
-
 
 ---
 
