@@ -5,10 +5,9 @@ export async function onRequestGet(context) {
     const userId = searchParams.get('user_id');
     const domainName = searchParams.get('domain_name');
 
-    // Validate required parameters
     if (!apiToken || !userId || !domainName) {
         return new Response(JSON.stringify({
-            error: 'Missing required parameters: api_token, user_id, or domain_name'
+            error: 'Missing required parameters'
         }), {
             status: 400,
             headers: {
@@ -18,40 +17,54 @@ export async function onRequestGet(context) {
         });
     }
 
-    // Build Atom.com API URL
     const atomUrl = `https://www.atom.com/api/marketplace/domain-appraisal?api_token=${encodeURIComponent(apiToken)}&user_id=${encodeURIComponent(userId)}&domain_name=${encodeURIComponent(domainName)}`;
 
     try {
-        // Fetch from Atom.com API
         const response = await fetch(atomUrl, {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
-                'User-Agent': 'Atom-Valuation-Tool/1.0'
+                'Accept': 'application/json, text/plain, */*',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Referer': 'https://www.atom.com/',
+                'Origin': 'https://www.atom.com',
+                'Sec-Fetch-Dest': 'empty',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Site': 'same-origin'
             }
         });
 
+        const responseText = await response.text();
+        
+        console.log('Status:', response.status);
+        console.log('Response:', responseText.substring(0, 500));
+
         if (!response.ok) {
-            throw new Error(`Atom API responded with status ${response.status}`);
+            return new Response(JSON.stringify({
+                error: `Atom API error: ${response.status}`,
+                details: responseText.substring(0, 500)
+            }), {
+                status: response.status,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            });
         }
 
-        const data = await response.json();
+        const data = JSON.parse(responseText);
 
-        // Return successful response with CORS headers
         return new Response(JSON.stringify(data), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
                 'Cache-Control': 'no-cache'
             }
         });
     } catch (error) {
-        console.error('Proxy Error:', error.message);
+        console.error('Error:', error);
         
-        // Return error response
         return new Response(JSON.stringify({
             error: error.message,
             domain: domainName
@@ -65,7 +78,6 @@ export async function onRequestGet(context) {
     }
 }
 
-// Handle CORS preflight requests
 export async function onRequestOptions() {
     return new Response(null, {
         status: 204,
