@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atom Bulk Valuation Tool</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Atom Bulk Valuation Tool</h1>
+        <p class="subtitle">Appraise multiple domains in seconds</p>
+
+        <!-- API Credentials Section -->
+        <div class="section" id="credentialsSection">
+            <div class="section-title">🔑 API Credentials</div>
+            <div style="margin-bottom: 15px;">
+                <label for="apiKey">Enter API Key Below</label>
+                <input type="text" id="apiKey" placeholder="Your Atom API Token">
+            </div>
+            <div>
+                <label for="userId">Enter Atom User ID Below</label>
+                <input type="text" id="userId" placeholder="Your Atom User ID">
+            </div>
+        </div>
+
+        <!-- Domain Input Section -->
+        <div class="section">
+            <div class="section-title">📝 Domain Names</div>
+            <label for="domainList">Enter all your domain names in txt format below (one in each row)</label>
+            <textarea id="domainList" placeholder="example.com&#10;mydomain.net&#10;coolsite.io"></textarea>
+            <button class="button" id="validateBtn">Validate Domains</button>
+        </div>
+
+        <!-- Validation Results -->
+        <div id="validationResults" class="hidden"></div>
+
+        <!-- Appraisal Section -->
+        <div id="appraisalSection" class="hidden">
+            <button class="button" id="appraiseBtn">Appraise All (<span id="domainCount">0</span>) Domains</button>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progressSection" class="hidden">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="loader"></div>
+            <p style="text-align: center; color: #666; margin-top: 10px;">
+                Processing domain <span id="currentDomain">1</span> of <span id="totalDomains">0</span>
+            </p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <div class="message success">
+                ✅ Appraisal complete! Your file is ready.
+            </div>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="successCount">0</div>
+                    <div class="stat-label">Successful</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="errorCount">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalValue">$0</div>
+                    <div class="stat-label">Total Value</div>
+                </div>
+            </div>
+            <button class="button" id="downloadBtn">📥 Download CSV Report</button>
+            <button class="button" id="resetBtn" style="background: #6c757d; margin-top: 10px;">🔄 Start Over</button>
+        </div>
+    </div>
+
+    <!-- Load scripts in order -->
+    <script src="js/config.js"></script>
+    <script src="js/dom.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/csv.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

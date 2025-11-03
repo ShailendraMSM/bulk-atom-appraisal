@@ -1,0 +1,20 @@
+const DOM = {
+    apiKey: document.getElementById('apiKey'),
+    userId: document.getElementById('userId'),
+    domainList: document.getElementById('domainList'),
+    validateBtn: document.getElementById('validateBtn'),
+    appraiseBtn: document.getElementById('appraiseBtn'),
+    downloadBtn: document.getElementById('downloadBtn'),
+    resetBtn: document.getElementById('resetBtn'),
+    validationResults: document.getElementById('validationResults'),
+    appraisalSection: document.getElementById('appraisalSection'),
+    progressSection: document.getElementById('progressSection'),
+    resultsSection: document.getElementById('resultsSection'),
+    domainCount: document.getElementById('domainCount'),
+    currentDomain: document.getElementById('currentDomain'),
+    totalDomains: document.getElementById('totalDomains'),
+    progressBar: document.getElementById('progressBar'),
+    successCount: document.getElementById('successCount'),
+    errorCount: document.getElementById('errorCount'),
+    totalValue: document.getElementById('totalValue')
+};
